@@ -17,7 +17,7 @@ class ServiceTeamController extends Controller
     {
         return ServiceTeamResource::collection(
             ServiceTeam::query()
-                ->with(['leader', 'members'])
+                ->with(['leader', 'employees'])
                 ->orderBy('name')
                 ->get()
         );
@@ -32,17 +32,17 @@ class ServiceTeamController extends Controller
         $team = ServiceTeam::create($validated);
 
         if (!empty($memberIds)) {
-            $team->members()->sync($memberIds);
+            \App\Models\Employee::whereIn('id', $memberIds)->update(['service_team_id' => $team->id]);
         }
 
-        $team->load(['leader', 'members']);
+        $team->load(['leader', 'employees']);
 
         return new ServiceTeamResource($team);
     }
 
     public function show(ServiceTeam $serviceTeam): ServiceTeamResource
     {
-        $serviceTeam->load(['leader', 'members']);
+        $serviceTeam->load(['leader', 'employees']);
 
         return new ServiceTeamResource($serviceTeam);
     }
@@ -56,10 +56,11 @@ class ServiceTeamController extends Controller
         $serviceTeam->update($validated);
 
         if (is_array($memberIds)) {
-            $serviceTeam->members()->sync($memberIds);
+            \App\Models\Employee::where('service_team_id', $serviceTeam->id)->update(['service_team_id' => null]);
+            \App\Models\Employee::whereIn('id', $memberIds)->update(['service_team_id' => $serviceTeam->id]);
         }
 
-        $serviceTeam->load(['leader', 'members']);
+        $serviceTeam->load(['leader', 'employees']);
 
         return new ServiceTeamResource($serviceTeam);
     }

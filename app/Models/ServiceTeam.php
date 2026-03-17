@@ -19,10 +19,9 @@ class ServiceTeam extends Model
         return $this->belongsTo(Employee::class, 'leader_employee_id');
     }
 
-    public function members()
+    public function employees()
     {
-        return $this->belongsToMany(Employee::class, 'service_team_members')
-            ->withTimestamps();
+        return $this->hasMany(Employee::class);
     }
 
     public function orders()

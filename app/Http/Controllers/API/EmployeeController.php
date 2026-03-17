@@ -16,7 +16,11 @@ class EmployeeController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return EmployeeResource::collection(
-            Employee::query()->orderBy('last_name')->orderBy('first_name')->get()
+            Employee::query()
+                ->with('serviceTeam')
+                ->orderBy('last_name')
+                ->orderBy('first_name')
+                ->get()
         );
     }
 
@@ -29,6 +33,7 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee): EmployeeResource
     {
+        $employee->load('serviceTeam');
         return new EmployeeResource($employee);
     }
 

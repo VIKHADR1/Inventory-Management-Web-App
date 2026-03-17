@@ -13,7 +13,7 @@ class ServiceTeamResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'leader' => new EmployeeResource($this->whenLoaded('leader')),
-            'members' => EmployeeResource::collection($this->whenLoaded('members')),
+            'employees' => EmployeeResource::collection($this->whenLoaded('employees')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

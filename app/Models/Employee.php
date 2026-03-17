@@ -18,6 +18,7 @@ class Employee extends Model
         'address',
         'hired_at',
         'is_active',
+        'service_team_id',
     ];
 
     protected $casts = [
@@ -25,10 +26,9 @@ class Employee extends Model
         'is_active' => 'boolean',
     ];
 
-    public function serviceTeams()
+    public function serviceTeam()
     {
-        return $this->belongsToMany(ServiceTeam::class, 'service_team_members')
-            ->withTimestamps();
+        return $this->belongsTo(ServiceTeam::class);
     }
 
     public function ledServiceTeams()

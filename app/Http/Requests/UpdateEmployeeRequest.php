@@ -22,6 +22,7 @@ class UpdateEmployeeRequest extends FormRequest
             'address' => ['nullable', 'string'],
             'hired_at' => ['nullable', 'date'],
             'is_active' => ['boolean'],
+            'service_team_id' => ['nullable', 'exists:service_teams,id'],
         ];
     }
 }
