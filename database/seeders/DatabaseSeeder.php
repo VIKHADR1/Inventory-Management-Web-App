@@ -89,15 +89,11 @@ class DatabaseSeeder extends Seeder
             'leader_employee_id' => $employees[3]->id,
         ]);
 
-        $teamNorth->members()->sync([
-            $employees[0]->id,
-            $employees[1]->id,
-        ]);
-
-        $teamSouth->members()->sync([
-            $employees[2]->id,
-            $employees[3]->id,
-        ]);
+        // Assign employees to teams
+        $employees[0]->update(['service_team_id' => $teamNorth->id]);
+        $employees[1]->update(['service_team_id' => $teamNorth->id]);
+        $employees[2]->update(['service_team_id' => $teamSouth->id]);
+        $employees[3]->update(['service_team_id' => $teamSouth->id]);
 
         $productsData = [
             [
