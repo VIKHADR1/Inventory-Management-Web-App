@@ -8,13 +8,28 @@ use App\Models\HistoryEntry;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ServiceTeam;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Create sample users
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password123'),
+        ]);
+
+        User::create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => Hash::make('password123'),
+        ]);
+
         $customers = [
             Customer::create([
                 'name' => 'John Reyes',
