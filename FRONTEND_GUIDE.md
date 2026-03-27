@@ -43,7 +43,8 @@ Relations:
 - Customer has many Orders.
 - Customer has many History Entries.
 - Employee can lead Service Teams.
-- Employees belong to many Service Teams.
+- Each Employee belongs to one Service Team (optional).
+- Service Team has many Employees.
 - Order belongs to Customer, Service Team (optional), and Employee (handled_by optional).
 - History Entry belongs to Order, Customer, Service Team (optional), and Employee (optional).
 
@@ -181,10 +182,15 @@ Endpoints:
 - `PUT /service-teams/{id}`
 - `DELETE /service-teams/{id}`
 
-Fields:
-- `name`
-- `leader_employee_id` (nullable)
-- `member_ids` (array of employee IDs)
+Request Fields (for create/update):
+- `name` (required, string)
+- `leader_employee_id` (nullable, integer - ID of employee who leads the team)
+- `member_ids` (optional, array of employee IDs to assign to this team)
+
+Response includes:
+- `id`, `name`, `leader_employee_id`
+- `leader` (employee object - the team leader)
+- `employees` (array of employee objects - all team members)
 
 Create example:
 ```json
@@ -192,6 +198,36 @@ Create example:
   "name": "North Team",
   "leader_employee_id": 1,
   "member_ids": [1, 2]
+}
+```
+
+Response example:
+```json
+{
+  "id": 1,
+  "name": "North Team",
+  "leader_employee_id": 1,
+  "leader": {
+    "id": 1,
+    "first_name": "Alicia",
+    "last_name": "Nguyen",
+    "email": "alicia.nguyen@example.com",
+    "job_title": "Service Lead"
+  },
+  "employees": [
+    {
+      "id": 1,
+      "first_name": "Alicia",
+      "last_name": "Nguyen",
+      "service_team_id": 1
+    },
+    {
+      "id": 2,
+      "first_name": "Marco",
+      "last_name": "Lee",
+      "service_team_id": 1
+    }
+  ]
 }
 ```
 
